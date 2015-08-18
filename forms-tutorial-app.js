@@ -1,17 +1,25 @@
+Tasks = new Mongo.Collection("tasks");
+
 if (Meteor.isClient) {
-  // counter starts at 0
-  Session.setDefault('counter', 0);
+  Forms.mixin(Template.TasksForm);
 
-  Template.hello.helpers({
-    counter: function () {
-      return Session.get('counter');
-    }
-  });
-
-  Template.hello.events({
-    'click button': function () {
-      // increment the counter when button is clicked
-      Session.set('counter', Session.get('counter') + 1);
+  Template.TasksForm.events({
+    'documentSubmit': function (e, tmpl) {
+      var task = tmpl.form.doc('task');
+      if (task && task.length) {
+        var data = {
+          task: tmpl.form.doc('task') || ''
+          , comments: tmpl.form.doc('comments') || ''
+          , createdAt: new Date()
+        }
+        Tasks.insert(data);
+        tmpl.form.doc({
+          'task': ''
+          , 'comments': ''
+        })
+      } else {
+        console.warn('No task input detected!');
+      }
     }
   });
 }
