@@ -8,3 +8,4 @@ meteor-platform
 autopublish
 insecure
 useful:forms@1.0.0-2
+materialize:materialize
