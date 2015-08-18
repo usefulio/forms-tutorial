@@ -1,14 +1,40 @@
 <head>
-  <title>forms-tutorial-app</title>
+  <title>Meteor Tasks</title>
 </head>
 
-<body>
-  <h1>Welcome to Meteor!</h1>
 
-  {{> hello}}
+<body>
+  <nav>
+    <div class="container">
+      <div class="nav-wrapper">
+        <a href="#" class="brand-logo">Add task:</a>
+      </div>
+    </div>
+  </nav>
+          
+  <div class="container">
+    {{> TasksForm}}
+  </div>
 </body>
 
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+<template name="TasksForm">
+  <div class="row">
+    <form class="col s12">
+      <div class="row">
+        <div class="input-field col s12">
+          <input name="task" type="text" class="validate">
+          <label for="task">Task</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input name="comments" type="text" class="validate">
+          <label for="comments">Comments</label>
+        </div>
+      </div>
+      <div class="row">
+        <button class="btn waves-effect waves-light" type="submit" name="action">Add</button>
+      </div>
+    </form>
+  </div>
 </template>
