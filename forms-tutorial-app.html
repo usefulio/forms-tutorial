@@ -33,7 +33,8 @@
         </div>
       </div>
       <div class="row">
-        <button class="btn waves-effect waves-light" type="submit" name="action">Add</button>
+        <button class="btn waves-effect waves-light" type="submit" name="newTask">Add Task</button>
+        <a class="default-form waves-effect waves-teal btn-flat hide">Add a new task</a>
       </div>
     </form>
   </div>
@@ -43,6 +44,7 @@
         <a href="#!" class="collection-item">
           <h5>{{task}}</h5>
           <p>{{comments}}</p>
+          <input type="hidden" name="_id" value="{{_id}}">
         </a>
       {{/each}}
     </ul>
