@@ -23,13 +23,13 @@
       <div class="row">
         <div class="input-field col s12">
           <input name="task" type="text" class="validate" value={{doc "task"}}>
-          <label for="task">Task</label>
+          <label for="task">Task <span class="error">{{#with error 'task'}} {{message}} {{/with}}</span></label>
         </div>
       </div>
       <div class="row">
         <div class="input-field col s12">
           <input name="comments" type="text" class="validate" value={{doc "comments"}}>
-          <label for="comments">Comments</label>
+          <label for="comments">Comments <span class="error">{{#with error 'comments'}} {{message}} {{/with}}</span></label>
         </div>
       </div>
       <div class="row">
