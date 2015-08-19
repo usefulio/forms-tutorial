@@ -1,1 +1,5 @@
-/* CSS declarations go here */
+.error {
+  color: #F44336;
+  font-style: italic;
+  font-weight: normal;
+}
