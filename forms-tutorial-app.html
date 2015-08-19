@@ -37,4 +37,14 @@
       </div>
     </form>
   </div>
+  <div class="row">
+    <ul class="collection">
+      {{#each tasks}}
+        <a href="#!" class="collection-item">
+          <h5>{{task}}</h5>
+          <p>{{comments}}</p>
+        </a>
+      {{/each}}
+    </ul>
+  </div>
 </template>
