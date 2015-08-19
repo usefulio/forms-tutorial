@@ -1,13 +1,30 @@
 Tasks = new Mongo.Collection("tasks");
 
 if (Meteor.isClient) {
-  Forms.mixin(Template.TasksForm);
+  Forms.mixin(Template.TasksForm, {
+    'schema': {
+      'task': function (val) {
+        var max = 60;
+        if (_.isUndefined(val)) {
+          return 'No task input detected!';
+        }
+        if (val.length > max)
+          return 'Task must not exceed ' + max + ' characters!';
+      }
+      , 'comments': function (val) {
+        var max = 140;
+        if (! _.isUndefined(val) && val.length > max)
+          return 'Task must not exceed ' + max + ' characters!'; 
+      }
+    }
+  });
 
   Template.TasksForm.events({
     'click button': function (e, tmpl) {
       e.preventDefault();
-      var task = tmpl.form.doc('task');
-      if (task && task.length) {
+      tmpl.form.validate();
+
+      if (tmpl.form.isValid()) {
         var data = {
           task: tmpl.form.doc('task') || ''
           , comments: tmpl.form.doc('comments') || ''
@@ -19,7 +36,9 @@ if (Meteor.isClient) {
           , 'comments': ''
         })
       } else {
-        console.warn('No task input detected!');
+        _.each(tmpl.form.errors(), function (error) {
+          $('input[name=' + error.name + ']').addClass('invalid');
+        });
       }
     }
   });
