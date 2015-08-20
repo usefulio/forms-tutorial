@@ -26,18 +26,11 @@ if (Meteor.isClient) {
   });
 
   Template.TasksForm.events({
-    'documentSubmit': function (e, tmpl) {
+    'documentSubmit': function (e, tmpl, doc) {
       tmpl.form.validate();
       if (tmpl.form.isValid()) {
         var data;
-        if ($(e.currentTarget).attr('name') == 'newTask') {
-          data = {
-            task: tmpl.form.doc('task') || ''
-            , comments: tmpl.form.doc('comments') || ''
-            , createdAt: new Date()
-          }
-          Tasks.insert(data);
-        } else if ($(e.currentTarget).attr('name') == 'editTask') {
+        if (doc._id) {
           data = {
             task: tmpl.form.doc('task') || ''
             , comments: tmpl.form.doc('comments') || ''
@@ -45,7 +38,12 @@ if (Meteor.isClient) {
           }
           Tasks.update(tmpl.form.doc('_id'), {$set: data});
         } else {
-          throw new Error("Button not supported");
+          data = {
+            task: tmpl.form.doc('task') || ''
+            , comments: tmpl.form.doc('comments') || ''
+            , createdAt: new Date()
+          }
+          Tasks.insert(data);
         }
         defaultForm(tmpl);
       } else {
