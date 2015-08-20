@@ -19,6 +19,13 @@ if (Meteor.isClient) {
     }
   });
 
+  Template.TasksForm.onRendered(function () {
+    $('.datepicker').pickadate({
+      selectMonths: true, // Creates a dropdown to control month
+      selectYears: 15 // Creates a dropdown of 15 years to control year
+    });
+  });
+
   Template.TasksForm.helpers({
     'tasks': function () {
       return Tasks.find({}, {sort: {createdAt: -1}});
@@ -34,6 +41,7 @@ if (Meteor.isClient) {
           data = {
             task: tmpl.form.doc('task') || ''
             , comments: tmpl.form.doc('comments') || ''
+            , dateDue: tmpl.form.doc('dateDue') || ''
             , modifiedAt: new Date()
           }
           Tasks.update(tmpl.form.doc('_id'), {$set: data});
@@ -41,6 +49,7 @@ if (Meteor.isClient) {
           data = {
             task: tmpl.form.doc('task') || ''
             , comments: tmpl.form.doc('comments') || ''
+            , dateDue: tmpl.form.doc('dateDue') || ''
             , createdAt: new Date()
           }
           Tasks.insert(data);
@@ -65,7 +74,8 @@ if (Meteor.isClient) {
 
       tmpl.form.doc({
         'task': $(e.currentTarget).find('h5').text()
-        , 'comments': $(e.currentTarget).find('p').text()
+        , 'comments': $(e.currentTarget).find('p.comments').text()
+        , 'dateDue': $(e.currentTarget).find('p.dateDue').text()
         , '_id': $(e.currentTarget).find('input[name="_id"]').val()
       })
       $('label').addClass('active');
@@ -93,5 +103,6 @@ function defaultForm (tmpl) {
   tmpl.form.doc({
     'task': ''
     , 'comments': ''
+    , 'dateDue': ''
   })
 }
