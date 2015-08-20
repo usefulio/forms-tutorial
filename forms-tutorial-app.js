@@ -68,9 +68,6 @@ if (Meteor.isClient) {
       $(e.currentTarget).addClass('active');
       $('html, body').animate({ scrollTop: 0 }, "slow");
 
-      $('button[name="newTask"]')
-        .attr('name', 'editTask')
-        .text('Edit Task');
       $('.default-form').removeClass('hide');
 
       tmpl.form.doc({
@@ -102,9 +99,6 @@ if (Meteor.isServer) {
 }
 
 function defaultForm (tmpl) {
-  $('button[name="editTask"]')
-    .attr('name', 'newTask')
-    .text('Add Task');
   $('.default-form').addClass('hide');
   $('.collection-item').removeClass('active');
 
