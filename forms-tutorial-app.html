@@ -33,6 +33,12 @@
         </div>
       </div>
       <div class="row">
+        <div class="input-field col s12">
+          <label for="dateDue" class="active">Date Due <span class="error">{{#with error 'dateDue'}} {{message}} {{/with}}</span></label>
+          <input name="dateDue" type="date" class="datepicker" value={{doc "dateDue"}}>
+        </div>
+      </div>
+      <div class="row">
         <button class="btn waves-effect waves-light" type="submit" name="newTask">Add Task</button>
         <a class="default-form waves-effect waves-teal btn-flat hide">Add a new task</a>
       </div>
@@ -43,7 +49,8 @@
       {{#each tasks}}
         <a href="#!" class="collection-item">
           <h5>{{task}}</h5>
-          <p>{{comments}}</p>
+          <p class="comments">{{comments}}</p>
+          <p class="dateDue">{{dateDue}}</p>
           <input type="hidden" name="_id" value="{{_id}}">
         </a>
       {{/each}}
