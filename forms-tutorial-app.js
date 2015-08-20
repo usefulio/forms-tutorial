@@ -1,4 +1,5 @@
 Tasks = new Mongo.Collection("tasks");
+var timeoutHandle;
 
 if (Meteor.isClient) {
   Forms.mixin(Template.TasksForm, {
@@ -83,6 +84,13 @@ if (Meteor.isClient) {
     , 'click .default-form': function (e, tmpl) {
       e.preventDefault();
       defaultForm(tmpl);
+    }
+    , 'keyup form': function (e, tmpl) {
+      clearTimeout(timeoutHandle);
+      timeoutHandle = Meteor.setTimeout(function () {
+        $(e.target).blur();
+        tmpl.form.submit(e.currentTarget);
+      }, 4000); // If user doesn't type anything for 4 seconds, submit the form
     }
   });
 }
