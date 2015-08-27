@@ -2,7 +2,6 @@
   <title>Meteor Tasks</title>
 </head>
 
-
 <body>
   <nav>
     <div class="container">
@@ -22,35 +21,36 @@
     <form class="col s12">
       <div class="row">
         <div class="input-field col s12">
-          <input name="task" type="text" class="validate" value={{doc "task"}}>
+          <input name="task" type="text" class="validate {{invalidInputClass 'task'}}" value={{doc "task"}}>
           <label for="task">Task <span class="error">{{#with error 'task'}} {{message}} {{/with}}</span></label>
         </div>
       </div>
       <div class="row">
         <div class="input-field col s12">
-          <input name="comments" type="text" class="validate" value={{doc "comments"}}>
+          <input name="comments" type="text" class="validate {{invalidInputClass 'comments'}}" value={{doc "comments"}}>
           <label for="comments">Comments <span class="error">{{#with error 'comments'}} {{message}} {{/with}}</span></label>
         </div>
       </div>
       <div class="row">
         <div class="input-field col s12">
           <label for="dateDue" class="active">Date Due <span class="error">{{#with error 'dateDue'}} {{message}} {{/with}}</span></label>
-          <input name="dateDue" type="date" class="datepicker" value={{doc "dateDue"}}>
+          <input name="dateDue" type="date" class="datepicker {{invalidInputClass 'comments'}}" value={{doc "dateDue"}}>
         </div>
       </div>
+      {{#if doc '_id'}}
       <div class="row">
-        <a class="default-form waves-effect waves-teal btn-flat hide">Add a new task</a>
+        <a class="default-form waves-effect waves-teal btn-flat ">Add a new task</a>
       </div>
+      {{/if}}
     </form>
   </div>
   <div class="row">
     <ul class="collection">
       {{#each tasks}}
-        <a href="#!" class="collection-item">
+        <a href="#!" class="collection-item {{activeTaskClass}}">
           <h5>{{task}}</h5>
-          <p class="comments">{{comments}}</p>
-          <p class="dateDue">{{dateDue}}</p>
-          <input type="hidden" name="_id" value="{{_id}}">
+          <p>{{comments}}</p>
+          <p>{{dateDue}}</p>
         </a>
       {{/each}}
     </ul>

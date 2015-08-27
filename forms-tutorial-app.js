@@ -31,51 +31,33 @@ if (Meteor.isClient) {
     'tasks': function () {
       return Tasks.find({}, {sort: {createdAt: -1}});
     }
+    , 'invalidInputClass': function (name) {
+      var tmpl = Template.instance();
+      return tmpl.form.error(name) ? 'invalid' : '';
+    }
+    , 'activeTaskClass': function () {
+      var tmpl = Template.instance();
+      return (tmpl.form.doc('_id') == this._id) ? 'active' : '';
+    }
   });
 
   Template.TasksForm.events({
     'documentSubmit': function (e, tmpl, doc) {
-      tmpl.form.validate();
       if (tmpl.form.isValid()) {
-        var data;
         if (doc._id) {
-          data = {
-            task: tmpl.form.doc('task') || ''
-            , comments: tmpl.form.doc('comments') || ''
-            , dateDue: tmpl.form.doc('dateDue') || ''
-            , modifiedAt: new Date()
-          }
-          Tasks.update(tmpl.form.doc('_id'), {$set: data});
+          doc = _.extend(doc, { modifiedAt: new Date() });
+          Tasks.update(doc._id, {$set: doc});
         } else {
-          data = {
-            task: tmpl.form.doc('task') || ''
-            , comments: tmpl.form.doc('comments') || ''
-            , dateDue: tmpl.form.doc('dateDue') || ''
-            , createdAt: new Date()
-          }
-          Tasks.insert(data);
+          doc = _.extend(doc, { createdAt: new Date() });
+          Tasks.insert(doc);
+          defaultForm(tmpl);
         }
-        defaultForm(tmpl);
-      } else {
-        _.each(tmpl.form.errors(), function (error) {
-          $('input[name=' + error.name + ']').addClass('invalid');
-        });
       }
     }
     , 'click .collection-item': function (e, tmpl) {
       e.preventDefault();
-      $('.collection-item').removeClass('active');
-      $(e.currentTarget).addClass('active');
       $('html, body').animate({ scrollTop: 0 }, "slow");
-
-      $('.default-form').removeClass('hide');
-
-      tmpl.form.doc({
-        'task': $(e.currentTarget).find('h5').text()
-        , 'comments': $(e.currentTarget).find('p.comments').text()
-        , 'dateDue': $(e.currentTarget).find('p.dateDue').text()
-        , '_id': $(e.currentTarget).find('input[name="_id"]').val()
-      })
+      tmpl.form.doc(this);
       $('label').addClass('active');
     }
     , 'click .default-form': function (e, tmpl) {
@@ -85,23 +67,14 @@ if (Meteor.isClient) {
     , 'keyup form': function (e, tmpl) {
       clearTimeout(timeoutHandle);
       timeoutHandle = Meteor.setTimeout(function () {
-        $(e.target).blur();
+        $(e.target).trigger('change');
         tmpl.form.submit(e.currentTarget);
       }, 4000); // If user doesn't type anything for 4 seconds, submit the form
     }
   });
 }
 
-if (Meteor.isServer) {
-  Meteor.startup(function () {
-    // code to run on server at startup
-  });
-}
-
 function defaultForm (tmpl) {
-  $('.default-form').addClass('hide');
-  $('.collection-item').removeClass('active');
-
   tmpl.form.doc({
     'task': ''
     , 'comments': ''
